@@ -1,17 +1,36 @@
-version: '3'
+version: "3"
+
 networks:
-  todos-net:
+  corp:
+    driver: bridge
+
 services:
   todos-api:
-    image: todos-api
+    container_name: todos-api
     networks:
-      todos-net:
+      - corp
+    build: 
+      context: .
+      dockerfile: ./api.Dockerfile
     ports:
-      - 4001:4001
+      - "4001:4001"
+  todos-api1:
+    container_name: todos-api1
+    networks:
+      - corp
+    build: 
+      context: .
+      dockerfile: ./api.Dockerfile
+    ports:
+      - "4002:4001"
   todos:
-    image: todos
+    container_name: todos
     networks:
-      todos-net:
+      - corp
+    build: .
+    volumes:
+      - ./dist:/usr/share/nginx/html/dist
+      - ./dist:/var/www/html/dist
+      - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - 4200:80
-
+      - "80:80"
