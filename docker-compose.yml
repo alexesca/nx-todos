@@ -1,0 +1,17 @@
+version: '3'
+networks:
+  todos-net:
+services:
+  todos-api:
+    image: todos-api
+    networks:
+      todos-net:
+    ports:
+      - 4001:4001
+  todos:
+    image: todos
+    networks:
+      todos-net:
+    ports:
+      - 4200:80
+
